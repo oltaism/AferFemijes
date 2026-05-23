@@ -1,0 +1,122 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  --tab-bar-h: 64px;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+html {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%;
+  touch-action: manipulation;
+}
+
+body {
+  @apply bg-slate-50 text-slate-900 antialiased;
+  font-feature-settings: "ss01", "cv11";
+  overscroll-behavior-y: contain;
+}
+
+@supports (padding: env(safe-area-inset-bottom)) {
+  .pb-safe {
+    padding-bottom: max(env(safe-area-inset-bottom), 0px);
+  }
+  .pt-safe {
+    padding-top: max(env(safe-area-inset-top), 0px);
+  }
+}
+
+/* Reserve room for the mobile tab bar */
+@media (max-width: 767px) {
+  body {
+    padding-bottom: calc(
+      var(--tab-bar-h) + env(safe-area-inset-bottom, 0px)
+    );
+  }
+}
+
+/* Prevent iOS zoom-on-focus by ensuring inputs are at least 16px */
+@media (max-width: 767px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+
+  /* IconInput: mos e zmadho kolonën e ikonës */
+  .icon-input-field {
+    font-size: 16px !important;
+  }
+}
+
+/* Focus ring helpers for accessibility */
+*:focus-visible {
+  @apply outline-none ring-2 ring-brand-500 ring-offset-2 ring-offset-white;
+}
+
+/* Skip link */
+.skip-link {
+  @apply sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50
+         focus:rounded-md focus:bg-white focus:px-3 focus:py-2 focus:text-sm
+         focus:shadow-card focus:text-brand-700;
+}
+
+/* Subtle gradient background helpers */
+.bg-grid {
+  background-image:
+    linear-gradient(rgba(15, 23, 42, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(15, 23, 42, 0.04) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+.card {
+  @apply rounded-2xl border border-slate-200/70 bg-white shadow-card;
+}
+
+.section-title {
+  @apply text-xs font-semibold uppercase tracking-[0.14em] text-slate-500;
+}
+
+.chip {
+  @apply inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium ring-1 ring-inset;
+}
+
+.btn {
+  @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2 text-sm font-medium
+         transition-colors disabled:cursor-not-allowed disabled:opacity-60;
+}
+
+.btn-primary {
+  @apply btn bg-brand-600 text-white hover:bg-brand-700;
+}
+
+.btn-secondary {
+  @apply btn bg-white text-slate-700 ring-1 ring-inset ring-slate-200 hover:bg-slate-50;
+}
+
+.btn-ghost {
+  @apply btn text-slate-700 hover:bg-slate-100;
+}
+
+.input {
+  @apply block w-full rounded-xl border-0 bg-white px-3 py-2 text-sm text-slate-900
+         shadow-sm ring-1 ring-inset ring-slate-200 placeholder:text-slate-400
+         focus:ring-2 focus:ring-inset focus:ring-brand-500;
+}
+
+.simple-mode .btn-primary,
+.simple-mode .btn-secondary,
+.simple-mode .btn-ghost {
+  @apply text-base px-5 py-3;
+}
+
+.simple-mode .input {
+  @apply text-base py-3;
+}
