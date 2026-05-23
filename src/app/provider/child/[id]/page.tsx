@@ -56,18 +56,13 @@ export default function ProviderChildDetailPage() {
   }, [token, id]);
 
   const child = profile ?? findChild(id);
-  if (!child) {
-    return <div className="card m-6 h-64 animate-pulse bg-slate-100" />;
-  }
+  const initialVaccines = child
+    ? vaccinesFor(child.id).sort(
+        (a, b) => a.recommendedAgeMonths - b.recommendedAgeMonths,
+      )
+    : [];
 
-  const provider = findProvider(child.pediatricianId);
-  const breakdown = scoreFor(child);
-  const alerts = risksFor(child.id);
-  const initial = vaccinesFor(child.id).sort(
-    (a, b) => a.recommendedAgeMonths - b.recommendedAgeMonths,
-  );
-
-  const [vaccinesState, setVaccinesState] = useState<Vaccine[]>(initial);
+  const [vaccinesState, setVaccinesState] = useState<Vaccine[]>(initialVaccines);
 
   useEffect(() => {
     if (!token) return;
@@ -81,6 +76,18 @@ export default function ProviderChildDetailPage() {
   }, [token, id]);
   const [note, setNote] = useState("");
   const [savedNotes, setSavedNotes] = useState<string[]>([]);
+
+  useEffect(() => {
+    setVaccinesState(initialVaccines);
+  }, [id, child?.id]);
+
+  if (!child) {
+    return <div className="card m-6 h-64 animate-pulse bg-slate-100" />;
+  }
+
+  const provider = findProvider(child.pediatricianId);
+  const breakdown = scoreFor(child);
+  const alerts = risksFor(child.id);
 
   async function markCompleted(id: string) {
     if (token) {
