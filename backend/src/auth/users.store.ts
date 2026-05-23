@@ -1,5 +1,5 @@
 import { ConflictException, Injectable } from "@nestjs/common";
-import { v4 as uuidv4 } from "uuid";
+import { randomUUID } from "crypto";
 import { AuthUser } from "../domain/auth.types";
 import { Role } from "../domain/types";
 import { AUTH_USERS } from "./users.seed";
@@ -15,6 +15,10 @@ export type RegisterInput = {
 export class UsersStore {
   private users: AuthUser[] = structuredClone(AUTH_USERS);
 
+  private shortId() {
+    return randomUUID().slice(0, 8);
+  }
+
   findByEmail(email: string) {
     return this.users.find(
       (u) => u.email.toLowerCase() === email.toLowerCase(),
@@ -29,7 +33,7 @@ export class UsersStore {
     if (this.findByEmail(input.email)) {
       throw new ConflictException("Ky email është i regjistruar tashmë.");
     }
-    const id = `user-${uuidv4().slice(0, 8)}`;
+    const id = `user-${this.shortId()}`;
     const user: AuthUser = {
       id,
       email: input.email.trim().toLowerCase(),
@@ -37,7 +41,7 @@ export class UsersStore {
       role: input.role,
       name: input.name.trim(),
       ...(input.role === "parent"
-        ? { parentId: `parent-${uuidv4().slice(0, 8)}` }
+        ? { parentId: `parent-${this.shortId()}` }
         : {}),
     };
     this.users.push(user);

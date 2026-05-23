@@ -1,5 +1,5 @@
 import { Injectable, OnModuleInit } from "@nestjs/common";
-import { v4 as uuidv4 } from "uuid";
+import { randomUUID } from "crypto";
 import {
   Appointment,
   Child,
@@ -110,7 +110,7 @@ export class DataStoreService implements OnModuleInit {
   }
 
   newId(prefix: string) {
-    return `${prefix}-${uuidv4().slice(0, 8)}`;
+    return `${prefix}-${randomUUID().slice(0, 8)}`;
   }
 
   findChild(id: string) {
