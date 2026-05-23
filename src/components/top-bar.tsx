@@ -140,10 +140,14 @@ export function TopBar() {
           aria-label="Menyja kryesore"
         >
           {nav.map((n) => {
+            const exact =
+              typeof (n as { exact?: boolean }).exact === "boolean"
+                ? (n as { exact?: boolean }).exact
+                : false;
             const active = isNavActive(
               pathname,
               n.href,
-              "exact" in n ? n.exact : false,
+              exact,
             );
             const Icon = n.icon;
             return (
