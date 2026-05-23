@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ApiBanner } from "@/components/api-banner";
 import { fetchChildProfile } from "@/lib/api/children";
 import { confirmVaccine } from "@/lib/api/providers";
@@ -56,11 +56,12 @@ export default function ProviderChildDetailPage() {
   }, [token, id]);
 
   const child = profile ?? findChild(id);
-  const initialVaccines = child
-    ? vaccinesFor(child.id).sort(
-        (a, b) => a.recommendedAgeMonths - b.recommendedAgeMonths,
-      )
-    : [];
+  const initialVaccines = useMemo(() => {
+    if (!child) return [] as Vaccine[];
+    return vaccinesFor(child.id).sort(
+      (a, b) => a.recommendedAgeMonths - b.recommendedAgeMonths,
+    );
+  }, [child?.id]);
 
   const [vaccinesState, setVaccinesState] = useState<Vaccine[]>(initialVaccines);
 
@@ -79,7 +80,7 @@ export default function ProviderChildDetailPage() {
 
   useEffect(() => {
     setVaccinesState(initialVaccines);
-  }, [id, child?.id]);
+  }, [initialVaccines]);
 
   if (!child) {
     return <div className="card m-6 h-64 animate-pulse bg-slate-100" />;
@@ -286,3 +287,4 @@ function msgCategoryLabel(c: string): string {
       return c;
   }
 }
+

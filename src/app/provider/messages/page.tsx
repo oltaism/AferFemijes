@@ -89,7 +89,7 @@ export default function ProviderMessagesPage() {
     fetchAiDraft(token, lastFromParent.childId, lastFromParent.category)
       .then((r) => setApiSuggestion(r.suggestion))
       .catch(() => setApiSuggestion(null));
-  }, [token, lastFromParent?.childId, lastFromParent?.category]);
+  }, [token, lastFromParent]);
 
   async function send(e: React.FormEvent) {
     e.preventDefault();
@@ -268,3 +268,4 @@ function categoryLabel(c: Message["category"]): string {
       return "E përgjithshme";
   }
 }
+
