@@ -68,11 +68,11 @@ export type OutbreakRiskSectionProps = {
   };
   municipalityAnalyticsData: MunicipalityAnalytics[];
   heatmap: HeatmapRow[];
-  monthlyTrend?: { month: string; coveragePercent: number }[];
+  monthlyTrend?: { month: string; coverage: number; overdue: number }[];
   ageBucketStats?: {
-    bucket: string;
-    onTime: number;
-    overdue: number;
+    age: string;
+    missedCheckups: number;
+    overdueVaccines: number;
   }[];
 };
 

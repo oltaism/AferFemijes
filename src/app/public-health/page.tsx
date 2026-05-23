@@ -76,14 +76,17 @@ export default function PublicHealthPage() {
         displayTotal={displayTotal}
         municipalityAnalyticsData={municipalityAnalyticsData}
         heatmap={heatmap}
-        monthlyTrend={api?.monthlyTrend?.map((row) => ({
-          month: row.month,
-          coveragePercent: row.coverage,
-        }))}
+        monthlyTrend={api?.monthlyTrend}
         ageBucketStats={api?.ageBucketStats?.map((row) => ({
-          bucket: row.bucket,
-          onTime: row.coverage,
-          overdue: Math.max(0, 100 - row.coverage),
+          age: row.bucket,
+          missedCheckups: Math.max(
+            0,
+            Math.round(((100 - row.coverage) * row.children) / 100),
+          ),
+          overdueVaccines: Math.max(
+            0,
+            Math.round(((100 - row.coverage) * row.children * 0.6) / 100),
+          ),
         }))}
       />
     </div>
