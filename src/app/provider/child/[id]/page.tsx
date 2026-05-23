@@ -36,8 +36,8 @@ export default function ProviderChildDetailPage() {
   const token = useSession((s) => s.accessToken);
   const [fromApi, setFromApi] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
-  const [profile, setProfile] = useState(
-    null as ReturnType<typeof findChild>,
+  const [profile, setProfile] = useState<ReturnType<typeof findChild> | null>(
+    null,
   );
 
   useEffect(() => {
@@ -61,7 +61,7 @@ export default function ProviderChildDetailPage() {
     return vaccinesFor(child.id).sort(
       (a, b) => a.recommendedAgeMonths - b.recommendedAgeMonths,
     );
-  }, [child?.id]);
+  }, [child]);
 
   const [vaccinesState, setVaccinesState] = useState<Vaccine[]>(initialVaccines);
 
