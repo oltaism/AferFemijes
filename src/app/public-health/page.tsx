@@ -76,8 +76,15 @@ export default function PublicHealthPage() {
         displayTotal={displayTotal}
         municipalityAnalyticsData={municipalityAnalyticsData}
         heatmap={heatmap}
-        monthlyTrend={api?.monthlyTrend}
-        ageBucketStats={api?.ageBucketStats}
+        monthlyTrend={api?.monthlyTrend?.map((row) => ({
+          month: row.month,
+          coveragePercent: row.coverage,
+        }))}
+        ageBucketStats={api?.ageBucketStats?.map((row) => ({
+          bucket: row.bucket,
+          onTime: row.coverage,
+          overdue: Math.max(0, 100 - row.coverage),
+        }))}
       />
     </div>
   );
